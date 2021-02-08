@@ -1,4 +1,14 @@
 <?php
+  session_start();
+  if(!isset($_SESSION['usuario'])){
+    ?>
+    <script type="text/javascript">
+      window.location.replace("index.html");  
+    </script>
+    <?php
+  }
+?>
+<?php
 $id = $_GET['id'];
 $fecha = $_GET['fecha'];
 if($fecha == ''){
@@ -43,13 +53,18 @@ if (isset($_GET['cobrada'])){
 }else{
   $cobrada = 0;
 }
+if (isset($_GET['suspendida'])){
+  $suspendida = 1;
+}else{
+  $suspendida = 0;
+}
 
 $nro = $_GET['nro'];
 
 try {
   require('funciones.php');
-  actualizarCirugia($id,$fecha,$hora,$lugar,$remito,$paciente,$principal,$ayudante,$tecnico,$servicios,$descartables,$observaciones,$factura,$protocolo,$certificadoDeImplante,$estado,$facturada,$cobrada,$nro);
-  header("location:mostrarCirugias.php");
+  actualizarCirugia($id,$fecha,$hora,$lugar,$remito,$paciente,$principal,$ayudante,$tecnico,$servicios,$descartables,$observaciones,$factura,$protocolo,$certificadoDeImplante,$estado,$facturada,$cobrada,$nro,$suspendida);
+  echo "<meta http-equiv='refresh' content ='0;url=inicio.php'>";
 } catch (Exception $e) {
   echo $e -> getLine() . $e -> getMessage();
 }

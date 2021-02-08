@@ -1,3 +1,13 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['usuario'])){
+    ?>
+    <script type="text/javascript">
+      window.location.replace("index.html");  
+    </script>
+    <?php
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +33,9 @@
       descartables LIKE '%$valor%' OR
       factura LIKE '%$valor%' OR
       observaciones LIKE '%$valor%'";
+      echo "<div>
+      <a href='inicio.php' class='btn btn-secondary'>Volver</a>
+      </div>";
       require('funciones.php');
       mostrarCirugias($sql);
    

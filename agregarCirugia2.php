@@ -1,4 +1,14 @@
 <?php
+  session_start();
+  if(!isset($_SESSION['usuario'])){
+    ?>
+    <script type="text/javascript">
+      window.location.replace("index.html");  
+    </script>
+    <?php
+  }
+?>
+<?php
   $fecha = $_GET['fecha'];
   if($fecha == ''){
     $fecha = NULL;
@@ -57,7 +67,7 @@
     $resultado -> closeCursor();
     $conn = null;
     echo "Cargada correctamente";
-    header("location:mostrarCirugias.php");
+    echo "<meta http-equiv='refresh' content ='0;url=inicio.php'>";
   } catch (Exception $e) {
     echo $e -> getLine() . $e -> getMessage();
   }

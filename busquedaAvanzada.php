@@ -1,3 +1,13 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['usuario'])){
+    ?>
+    <script type="text/javascript">
+      window.location.replace("index.html");  
+    </script>
+    <?php
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,70 +20,87 @@
 </head>
 <body>
   <?php
-    $fecha = $_GET['fecha'];
-    if ($fecha == ''){
-      $fecha = NULL;
-    }
-    $hora = $_GET['hora'];
-    if ($hora == ''){
-      $hora = NULL;
-    }
-    $lugar = $_GET['lugar'];
-    $principal = $_GET['principal'];
-    $ayudante = $_GET['ayudante'];
-    $tecnico = $_GET['tecnico'];
-    $paciente = $_GET['paciente'];
-    $servicios = $_GET['servicios'];
-    $descartables = $_GET['descartables'];
-    $remito = $_GET['remito'];  
-    $observaciones = $_GET['observaciones'];
-    $factura = $_GET['factura'];
-    if (isset($_GET['protocolo'])){
-      $protocolo = 1;
-    }else{
-      $protocolo = 0;
-    }
-    if (isset($_GET['certificadoDeImplante'])){
-      $certificadoDeImplante = 1;
-    }else{
-      $certificadoDeImplante = 0;
-    }
-    if (isset($_GET['realizada'])){
-      $realizada = 1;
-    }else{
-      $realizada = 0;
-    }
-    if (isset($_GET['facturada'])){
-      $facturada = 1;
-    }else{
-      $facturada = 0;
-    }
-    if (isset($_GET['cobrada'])){
-      $cobrada = 1;
-    }else{
-      $cobrada = 0;
-    }
-    $nro = $_GET['nro'];
+  $lugar = $_GET['lugar'];
+  $medico = $_GET['principal'];
+  $ayudante = $_GET['ayudante'];
+  $paciente = $_GET['paciente'];
+  $tecnico = $_GET['tecnico'];
+  $servicios = $_GET['servicios'];
+  $observaciones = $_GET['observaciones'];
+  $descartables = $_GET['descartables'];
+  $remito = $_GET['remito'];
+  $factura = $_GET['factura'];
+  $nro = $_GET['nro'];
 
-    $sql = "SELECT * FROM cirugias WHERE (fecha  LIKE '%$fecha%') AND
-    (hora  LIKE '%$hora%'); AND
-    lugar  LIKE '%$lugar%' AND
-    principal  LIKE '%$principal%' AND
-    ayudante  LIKE '%$ayudante%' AND
-    tecnico  LIKE '%$tecnico%' AND
-    paciente  LIKE '%$paciente%' AND
-    servicios  LIKE '%$servicios%' AND
-    descartables  LIKE '%$descartables%' AND
-    remito  LIKE '%$remito%' AND
-    observaciones LIKE '%$observaciones%' AND
-    factura  LIKE '%$factura%' AND
-    protocolo  = $protocolo AND
-    certificadodeimplante  = $certificadoDeImplante AND
-    estado  = $realizada AND
-    facturada = $facturada AND
-    cobrada  = $cobrada AND
-    nro  LIKE '%$nro%'";
-    echo $sql;
+    $sql = "SELECT * FROM CIRUGIAS WHERE 1 AND lugar LIKE '%$lugar%'
+     AND principal LIKE '%$medico%'
+     AND ayudante LIKE '%$ayudante%'
+     AND paciente LIKE '%$paciente%'
+     AND tecnico LIKE '%$tecnico%'
+     AND servicios LIKE '%$servicios%'
+     AND observaciones LIKE '%$observaciones%'
+     AND descartables LIKE '%$descartables%'
+     AND remito LIKE '%$remito%'
+     AND factura LIKE '%$factura%'
+     AND nro LIKE '%$nro%'";
+
+
+    if(isset($_GET['actFecha'])){
+      $fecha = $_GET['fecha'];
+      $sql = $sql . "AND fecha = '$fecha' ";
+    }
+
+    if (isset($_GET['actHora'])){
+      $hora = $_GET['hora'];
+      $sql = $sql . "AND hora = '$hora' ";
+    }
+
+
+
+    if (isset($_GET['actProtocolo'])){
+      if (isset($_GET['protocolo'])){
+        $protocolo = 1;
+      }else{
+        $protocolo = 0;
+      }
+      $sql = $sql . "AND protocolo = '$protocolo' ";
+    }
+
+    if (isset($_GET['actCertificadoDeImplante'])){
+      if (isset($_GET['certificadoDeImplante'])){
+        $certificadoDeImplante = 1;
+      }else{
+        $certificadoDeImplante = 0;
+      }
+      $sql = $sql . "AND certificadoDeImplante = '$certificadoDeImplante' ";
+    }
+    if (isset($_GET['actEstado'])){
+      if (isset($_GET['realizada'])){
+        $estado = 1;
+      }else{
+        $estado = 0;
+      }
+      $sql = $sql . "AND estado = '$estado' ";
+    }
+    if (isset($_GET['actFacturada'])){
+      if (isset($_GET['facturada'])){
+        $facturada = 1;
+      }else{
+        $facturada = 0;
+      }
+      $sql = $sql . "AND facturada = '$facturada' ";
+    }
+    if (isset($_GET['actCobrada'])){
+      if (isset($_GET['cobrada'])){
+        $cobrada = 1;
+      }else{
+        $cobrada = 0;
+      }
+      $sql = $sql . "AND cobrada = '$cobrada' ";
+    }
+    echo "<div>
+      <a href='inicio.php' class='btn btn-secondary'>Volver</a>
+      </div>";
     require('funciones.php');
     mostrarCirugias($sql);
 

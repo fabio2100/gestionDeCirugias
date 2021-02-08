@@ -1,3 +1,13 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['usuario'])){
+    ?>
+    <script type="text/javascript">
+      window.location.replace("index.html");  
+    </script>
+    <?php
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +22,7 @@
 
 <body>
   <div>
-    <a  class="button btn-secondary p-4" href="index.php">Volver</a>
+    <a  class="button btn-secondary p-4" href="inicio.php">Volver</a>
   </div>
   <br>
   <?php
